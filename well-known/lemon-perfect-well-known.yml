@@ -1,0 +1,66 @@
+generated: '2026-08-04'
+method: probed
+source: https://lemonperfect.com/
+host: https://lemonperfect.com
+note: >-
+  Lemon Perfect's public API surface is served by Shopify on the company's own
+  apex domain (lemonperfect.com). Every document below was fetched anonymously
+  from that host. The OIDC/OAuth metadata describes the Shopify Customer
+  Accounts authorization server bound to this store (shop id 3205202020); the
+  UCP profile is this store's own agent-commerce merchant profile.
+documents:
+- path: /.well-known/ucp
+  description: Universal Commerce Protocol merchant profile (services, capabilities, payment handlers)
+  status: 200
+  content_type: application/json
+  file: lemon-perfect-ucp.json
+- path: /.well-known/openid-configuration
+  description: OpenID Connect discovery for Shopify Customer Accounts
+  status: 200
+  content_type: application/json
+  file: lemon-perfect-openid-configuration.json
+- path: /.well-known/oauth-authorization-server
+  description: RFC 8414 OAuth 2.0 authorization server metadata
+  status: 200
+  content_type: application/json
+  file: lemon-perfect-oauth-authorization-server.json
+- path: /.well-known/apple-app-site-association
+  description: Apple universal links association
+  status: 200
+- path: /.well-known/security.txt
+  description: RFC 9116 security contact
+  status: 404
+- path: /.well-known/agent-card.json
+  description: A2A 1.0.0 agent card
+  status: 404
+- path: /.well-known/agent.json
+  description: A2A legacy (pre-0.3) agent card
+  status: 404
+- path: /.well-known/api-catalog
+  description: RFC 9727 API catalog
+  status: 404
+- path: /.well-known/ai-plugin.json
+  description: Legacy OpenAI plugin manifest
+  status: 404
+adjacent:
+- path: /llms.txt
+  description: Agent instructions (mirror of /agents.md)
+  status: 200
+  content_type: text/markdown
+  file: ../llms/lemon-perfect-llms.txt
+- path: /agents.md
+  description: Canonical agent-facing description of the store
+  status: 200
+  content_type: text/markdown
+  file: ../llms/lemon-perfect-agents.md
+- path: /robots.txt
+  description: >-
+    Crawl policy plus an explicit agent-commerce policy block — points agents at
+    UCP/MCP and forbids automated checkout completion without human approval
+  status: 200
+  file: lemon-perfect-robots.txt
+x-evidence:
+  fetched: '2026-08-04'
+  probed_hosts:
+  - lemonperfect.com
+  - the-lemon-perfect-company.myshopify.com

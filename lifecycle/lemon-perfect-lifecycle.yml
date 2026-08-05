@@ -1,0 +1,78 @@
+generated: '2026-08-04'
+method: probed
+source: https://lemonperfect.com/api/2026-07/graphql.json
+note: >-
+  Lemon Perfect publishes no first-party API versioning policy, deprecation
+  policy, SLA or status page — it is a beverage brand whose API surface is
+  platform-provided. What follows is what the live endpoints actually declare
+  about their own lifecycle, queried on 2026-08-04. Platform-level lifecycle
+  facts are labelled as such and are NOT claimed as first-party commitments.
+versioning:
+  scheme: calendar-version-in-path
+  pattern: '/api/{YYYY-MM}/graphql.json'
+  current: '2026-07'
+  response_header: x-shopify-api-version
+  self_describing: true
+  discovery_query: 'publicApiVersions { handle supported displayName }'
+  versions:
+  - {handle: '2025-10', supported: true}
+  - {handle: '2026-01', supported: true}
+  - {handle: '2026-04', supported: true}
+  - {handle: '2026-07', supported: true, note: latest stable}
+  - {handle: '2026-10', supported: false, note: release candidate}
+  - {handle: unstable, supported: false}
+  cadence: quarterly
+  support_window: 'Four quarterly versions observed supported concurrently (2025-10 through 2026-07).'
+  first_party: false
+  attribution: Shopify Storefront API version train
+ucp_versioning:
+  current: '2026-04-08'
+  supported: ['2026-04-08', '2026-01-23']
+  discovery: https://lemonperfect.com/.well-known/ucp
+  per_version_profiles:
+    '2026-04-08': https://the-lemon-perfect-company.myshopify.com/.well-known/ucp/2026-04-08
+    '2026-01-23': https://the-lemon-perfect-company.myshopify.com/.well-known/ucp/2026-01-23
+deprecation:
+  policy_url: null
+  policy_published: false
+  sunset_header: false
+  in_schema: true
+  mechanism: '@deprecated directive with a machine-readable deprecationReason on every retired field'
+  deprecated_field_count: 54
+  examples:
+  - {field: 'Cart.estimatedCost', reason: 'Use `cost` instead.'}
+  - {field: 'Cart.discountAllocations', reason: 'Use `cart.lines[].discountAllocations(lineLevelOnly: false)` instead.'}
+  - {field: 'Article.author', reason: 'Use `authorV2` instead.'}
+  - {field: 'AppliedGiftCard.balanceV2', reason: 'Use `balance` instead.'}
+  note: >-
+    Deprecation is signalled inside the contract itself, which is real and
+    machine-consumable, but Lemon Perfect publishes no deprecation *policy*
+    document, no removal timeline, and no RFC 8594 Sunset/Deprecation headers.
+sla:
+  url: null
+  uptime_target: null
+  published: false
+status_page:
+  first_party: null
+  probes:
+  - {url: 'https://status.lemonperfect.com', result: 'DNS/connect failure (000)'}
+  - {url: 'https://lemonperfect.com/status', http_status: 404}
+  platform_status_page: https://www.shopifystatus.com
+  note: >-
+    Lemon Perfect operates no status page for its own API surface. The Shopify
+    platform status page is recorded for reference only and is deliberately NOT
+    wired as a first-party StatusPage pointer.
+changelog:
+  first_party: false
+  url: null
+  note: >-
+    No dated API changelog is published by Lemon Perfect. Version-to-version
+    change is discoverable only by diffing the introspected schema.
+deprecated_operations: []
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemonperfect.com/api/2026-07/graphql.json', http_status: 200}
+  - {url: 'https://lemonperfect.com/.well-known/ucp', http_status: 200}
+  - {url: 'https://status.lemonperfect.com', http_status: 0}
+  - {url: 'https://lemonperfect.com/status', http_status: 404}

@@ -1,0 +1,74 @@
+generated: '2026-08-04'
+method: derived
+source: graphql/lemon-perfect-storefront-2026-07.graphql#CompletionErrorCode
+note: Lemon Perfect sells direct-to-consumer and settles card payments through its store, so it has a
+  real payment-decline surface. These codes are the CompletionErrorCode enum captured verbatim by introspecting
+  the live Storefront GraphQL schema on 2026-08-04. `meaning` and `action` are API Evangelist annotations
+  describing agent handling — the store publishes no decline-code reference of its own. Complements errors/lemon-perfect-error-codes.yml,
+  which covers the full 197-code error registry.
+envelope:
+  field: CompletionError.code
+  returned_on:
+  - cartSubmitForCompletion
+  - cartCompletionAttempt
+  - complete_checkout (UCP/MCP)
+  interface: DisplayableError
+masked_to_buyer: Shopify does not expose issuer decline reasons beyond these classes; the granular network
+  decline reason is not surfaced to the storefront or to agents.
+decline_codes:
+- code: ERROR
+  meaning: Unclassified completion failure.
+  action: Surface to the buyer; do not silently retry.
+  retryable: false
+- code: INVENTORY_RESERVATION_ERROR
+  meaning: Inventory could not be reserved for one or more lines.
+  action: Re-check availability and rebuild the cart.
+  retryable: true
+- code: PAYMENT_ERROR
+  meaning: Generic payment failure at the gateway.
+  action: Ask the buyer to retry or use a different payment method.
+  retryable: false
+- code: PAYMENT_TRANSIENT_ERROR
+  meaning: Temporary/retryable payment processor failure.
+  action: Retry with the same Idempotency-Key after a short backoff.
+  retryable: true
+- code: PAYMENT_AMOUNT_TOO_SMALL
+  meaning: Order total is below the minimum the payment method accepts.
+  action: Increase the cart total or switch payment method.
+  retryable: false
+- code: PAYMENT_GATEWAY_NOT_ENABLED_ERROR
+  meaning: The requested payment gateway is not enabled on this store.
+  action: Select one of the advertised payment handlers (shopify.card, gpay, shop_pay).
+  retryable: false
+- code: PAYMENT_INSUFFICIENT_FUNDS
+  meaning: Issuer declined for insufficient funds.
+  action: Buyer must use another card or funding source. Do not auto-retry.
+  retryable: false
+- code: PAYMENT_INVALID_PAYMENT_METHOD
+  meaning: The supplied payment method is not valid.
+  action: Re-collect payment details from the buyer.
+  retryable: false
+- code: PAYMENT_INVALID_CURRENCY
+  meaning: Currency is not supported for this payment method.
+  action: Use the store currency (USD) or pass context.currency correctly.
+  retryable: false
+- code: PAYMENT_INVALID_CREDIT_CARD
+  meaning: Card number/expiry/CVV failed validation.
+  action: Re-collect card details from the buyer.
+  retryable: false
+- code: PAYMENT_INVALID_BILLING_ADDRESS
+  meaning: Billing address failed validation or AVS.
+  action: Re-collect the billing address.
+  retryable: false
+- code: PAYMENT_CARD_DECLINED
+  meaning: Issuer declined the authorization.
+  action: Buyer must use another payment method. Do not auto-retry.
+  retryable: false
+- code: PAYMENT_CALL_ISSUER
+  meaning: Issuer requires the cardholder to contact them.
+  action: Buyer must contact their bank, or use another card.
+  retryable: false
+x-evidence:
+  fetched: '2026-08-04'
+  url: https://lemonperfect.com/api/2026-07/graphql.json
+  http_status: 200

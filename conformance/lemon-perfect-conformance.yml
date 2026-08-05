@@ -1,0 +1,107 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Live probes of lemonperfect.com on 2026-08-04 plus the discovery documents the
+  host serves (/.well-known/ucp, /.well-known/openid-configuration,
+  /.well-known/oauth-authorization-server, /llms.txt, /agents.md, /robots.txt).
+note: >-
+  Standards conformance asserted only where a document served by lemonperfect.com
+  or a live response demonstrates it. Lemon Perfect makes no compliance claims of
+  its own (no trust center, no certification page), so no certification is
+  recorded and no `Compliance` pointer is emitted.
+standards:
+- id: graphql
+  name: GraphQL (June 2018 spec)
+  conforms: true
+  evidence: 'Live introspection returned a valid __schema with 428 types at /api/2026-07/graphql.json'
+- id: graphql-cursor-connections
+  name: Relay GraphQL Cursor Connections Specification
+  conforms: true
+  evidence: '*Connection / *Edge / PageInfo types with first/last/after/before arguments throughout the SDL'
+- id: jsonrpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: '/api/ucp/mcp returns a well-formed JSON-RPC 2.0 error object ({jsonrpc, id, error:{code, message, data}})'
+- id: mcp
+  name: Model Context Protocol
+  conforms: true
+  evidence: 'Hosted MCP endpoint at /api/ucp/mcp advertised as transport "mcp" in /.well-known/ucp'
+  note: 'tools/list is gated on agent identity, so protocol conformance beyond the JSON-RPC envelope was not verifiable anonymously.'
+- id: ucp-2026-04-08
+  name: Universal Commerce Protocol 2026-04-08
+  conforms: true
+  evidence: '/.well-known/ucp declares version 2026-04-08 with service dev.ucp.shopping and 8 capabilities'
+  capabilities: [dev.ucp.shopping.checkout, dev.ucp.shopping.cart, dev.ucp.shopping.fulfillment, dev.ucp.shopping.discount, dev.ucp.shopping.order, dev.ucp.shopping.catalog.search, dev.ucp.shopping.catalog.lookup, dev.shopify.catalog]
+- id: openrpc-1.3.2
+  name: OpenRPC 1.3.2
+  conforms: true
+  evidence: 'The store''s UCP profile binds its MCP service to https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json (openrpc 1.3.2, 13 methods)'
+- id: oidc-discovery
+  name: OpenID Connect Discovery 1.0
+  conforms: true
+  evidence: '/.well-known/openid-configuration returns HTTP 200 with issuer, jwks_uri, authorization_endpoint, token_endpoint'
+- id: oauth2
+  name: OAuth 2.0 (RFC 6749)
+  conforms: true
+  evidence: 'authorization_code + refresh_token grants declared in the discovery documents'
+- id: rfc8414
+  name: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+  conforms: true
+  evidence: '/.well-known/oauth-authorization-server returns HTTP 200 with the required metadata fields'
+- id: rfc7636
+  name: PKCE (RFC 7636)
+  conforms: true
+  evidence: 'code_challenge_methods_supported: [S256]'
+- id: rfc7523
+  name: JWT Bearer authorization grant (RFC 7523)
+  conforms: true
+  evidence: 'grant_types_supported includes urn:ietf:params:oauth:grant-type:jwt-bearer'
+- id: rfc8615
+  name: Well-Known URIs (RFC 8615)
+  conforms: true
+  evidence: 'Serves /.well-known/ucp, /.well-known/openid-configuration, /.well-known/oauth-authorization-server'
+- id: llms-txt
+  name: llms.txt
+  conforms: true
+  evidence: '/llms.txt returns HTTP 200 text/markdown; mirrors the canonical /agents.md'
+- id: agents-md
+  name: AGENTS.md / agent instructions
+  conforms: true
+  evidence: '/agents.md returns HTTP 200 text/markdown with an explicit agent operating policy'
+- id: idempotency-key
+  name: Idempotency-Key HTTP header (draft-ietf-httpapi-idempotency-key-header)
+  conforms: true
+  evidence: 'UCP meta schema defines meta.idempotency-key (uuid) mapping to the Idempotency-Key HTTP header'
+- id: rfc9116
+  name: security.txt (RFC 9116)
+  conforms: false
+  evidence: '/.well-known/security.txt returned HTTP 404'
+- id: rfc9727
+  name: api-catalog (RFC 9727)
+  conforms: false
+  evidence: '/.well-known/api-catalog returned HTTP 404'
+- id: a2a
+  name: A2A Agent Card 1.0.0
+  conforms: false
+  evidence: 'Both /.well-known/agent-card.json and /.well-known/agent.json returned HTTP 404'
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: 'No OpenAPI/Swagger document found on lemonperfect.com or the myshopify.com canonical host (/openapi.json, /swagger.json, /api-docs, /docs all miss)'
+- id: asyncapi
+  name: AsyncAPI
+  conforms: false
+  evidence: 'No public event/streaming surface; storefront webhooks are admin-scoped and not publicly advertised'
+- id: rfc9457
+  name: Problem Details for HTTP APIs (RFC 9457)
+  conforms: false
+  evidence: 'Errors use GraphQL errors[]/userErrors and JSON-RPC error objects, not application/problem+json'
+- id: rfc8594
+  name: Sunset HTTP header (RFC 8594)
+  conforms: false
+  evidence: 'No Sunset or Deprecation headers observed; deprecation is signalled only via the GraphQL @deprecated directive'
+certifications: []
+compliance_program_published: false
+x-evidence:
+  fetched: '2026-08-04'
+  host: lemonperfect.com

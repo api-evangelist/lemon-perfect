@@ -1,0 +1,115 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Live probes of https://lemonperfect.com/api/2026-07/graphql.json and
+  https://lemonperfect.com/api/ucp/mcp, plus https://lemonperfect.com/agents.md
+  and the UCP shopping OpenRPC schema the store's /.well-known/ucp points at.
+note: >-
+  Cross-cutting runtime semantics for Lemon Perfect's two public API surfaces.
+  Every header and field named below was observed in a real response or read
+  from a document the store serves — none is assumed from platform knowledge.
+authentication:
+  style: >-
+    Anonymous/public-token for Storefront GraphQL reads; OIDC authorization-code
+    + PKCE for customer-scoped access; agent-profile identity (UCP-Agent) for
+    the MCP commerce endpoint.
+  artifact: authentication/lemon-perfect-authentication.yml
+  scopes: scopes/lemon-perfect-scopes.yml
+idempotency:
+  supported: true
+  surfaces:
+  - surface: ucp-mcp
+    header: Idempotency-Key
+    param: 'meta.idempotency-key'
+    format: uuid
+    description: >-
+      "Unique key for retry safety. Maps to HTTP Idempotency-Key header." —
+      the `meta` schema of the UCP shopping service the store advertises at
+      /.well-known/ucp.
+    schema: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+    scope: per-request
+  - surface: graphql
+    evidence: >-
+      The 2026-07 Storefront schema defines
+      UserErrorsShopPayPaymentRequestSessionUserErrorsCode.IDEMPOTENCY_KEY_ALREADY_USED,
+      confirming server-side idempotency-key enforcement on Shop Pay payment
+      request sessions.
+    schema: graphql/lemon-perfect-storefront-2026-07.graphql
+  retention: not published
+pagination:
+  style: relay-cursor-connections
+  surface: graphql
+  request_params: [first, last, after, before, reverse, sortKey]
+  response_fields: [edges, node, cursor, 'pageInfo.hasNextPage', 'pageInfo.hasPreviousPage', 'pageInfo.startCursor', 'pageInfo.endCursor']
+  evidence: 'PageInfo type and *Connection types verified in the introspected SDL'
+  json_endpoints:
+    style: page-and-limit
+    params: [page, limit]
+    example: /products.json?limit=250&page=2
+    max_limit: 250
+    note: 'Storefront JSON endpoints documented in /llms.txt (/products.json, /collections/{handle}/products.json)'
+field_selection:
+  style: graphql-selection-sets
+  description: >-
+    Field selection is intrinsic to GraphQL — the client names exactly the
+    fields it wants. No sparse-fieldset or `expand` parameter exists.
+metadata:
+  supported: true
+  mechanism: metafields / metaobjects
+  graphql_fields: [metafield, metafields, metaobject, metaobjects, cartMetafieldsSet, cartMetafieldDelete]
+  cart_attributes: cartAttributesUpdate
+request_tracing:
+  header: x-request-id
+  observed: '2e21e7cb-cdbd-4b1b-9fe8-820dd070d7d6-1785878861'
+  also:
+  - header: server-timing
+    fields: [processing, db, edge, country, servedBy, requestID, graphql, gqlSelectionNames]
+    description: Per-request timing and routing breadcrumbs returned on every GraphQL call.
+versioning:
+  scheme: calendar-version-in-path
+  pattern: '/api/{YYYY-MM}/graphql.json'
+  current: '2026-07'
+  response_header: x-shopify-api-version
+  supported_versions_query: 'publicApiVersions { handle supported }'
+  ucp:
+    current: '2026-04-08'
+    supported: ['2026-04-08', '2026-01-23']
+    negotiation: 'per-version profile documents under /.well-known/ucp/{version}'
+  artifact: lifecycle/lemon-perfect-lifecycle.yml
+error_envelope:
+  graphql:
+    transport: 'HTTP 200 with a top-level `errors[]` array (GraphQL spec)'
+    domain_errors: >-
+      Mutations return typed `userErrors`/`cartUserErrors` payloads implementing
+      the `DisplayableError` interface — `{ field, message, code }` — so
+      business failures are data, not transport errors.
+    interface: DisplayableError
+  ucp_mcp:
+    transport: 'JSON-RPC 2.0 error object'
+    shape: '{ jsonrpc, id, error: { code, message, data: { code, content, continue_url } } }'
+    observed_example: '-32001 / invalid_profile_url'
+  artifact: errors/lemon-perfect-error-codes.yml
+  rfc9457: false
+rate_limiting:
+  graphql:
+    model: query-cost
+    request_headers: []
+    response_headers: [shopify-complexity-score, shopify-complexity-score-v2]
+    response_body: 'extensions.cost.requestedQueryCost on every response'
+    observed: 'shopify-complexity-score-v2: 9 for `{shop{name}}`'
+  ucp_mcp:
+    model: per-ip
+    signal: 'HTTP 429'
+    policy: 'Agents must back off on 429 (/agents.md)'
+  artifact: rate-limits/lemon-perfect-rate-limits.yml
+agent_policy:
+  documents: [/llms.txt, /agents.md, /robots.txt]
+  human_in_the_loop: 'required before payment/checkout completion'
+  recommended_channel: https://shop.app/SKILL.md
+  buyer_context_params: ['context.address_country', 'context.currency']
+x-evidence:
+  fetched: '2026-08-04'
+  observations:
+  - {url: 'https://lemonperfect.com/api/2026-07/graphql.json', http_status: 200, headers_seen: [x-request-id, x-shopify-api-version, shopify-complexity-score, shopify-complexity-score-v2, server-timing]}
+  - {url: 'https://lemonperfect.com/api/ucp/mcp', http_status: 422}
+  - {url: 'https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json', http_status: 200}

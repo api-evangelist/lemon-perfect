@@ -1,0 +1,37 @@
+generated: '2026-08-04'
+method: generated
+note: >-
+  Lemon Perfect publishes its own agent instructions at
+  https://lemonperfect.com/agents.md (mirrored at /llms.txt). That document is
+  captured verbatim as the first entry below — it is the provider's own skill,
+  not ours. The two packaged skills that follow are API Evangelist generated,
+  grounded in operation names verified verbatim against the introspected
+  Storefront GraphQL SDL and the UCP shopping OpenRPC schema the store's
+  /.well-known/ucp points at.
+skills:
+- file: lemon-perfect-agents.md
+  name: Agent Instructions — Lemon Perfect
+  method: searched
+  source: https://lemonperfect.com/agents.md
+  publisher: Lemon Perfect
+  verbatim: true
+  description: >-
+    The store's own agent-facing operating instructions: UCP discovery and MCP
+    endpoint, the typical agent flow, the buyer-approval rule, rate-limit
+    guidance, and the read-only browsing surface.
+- file: lemon-perfect-browse-catalog.md
+  name: Browse the Lemon Perfect catalog
+  method: generated
+  api: graphql/lemon-perfect-storefront-2026-07.graphql
+  operations: [products, product, productByHandle, search, predictiveSearch, collections, collection, collectionByHandle, productRecommendations, shop]
+  description: Anonymous read-only catalog discovery over the Storefront GraphQL API.
+- file: lemon-perfect-agentic-purchase.md
+  name: Buy Lemon Perfect on a buyer's behalf (UCP/MCP)
+  method: generated
+  api: mcp/lemon-perfect-mcp.yml
+  operations: [search_catalog, lookup_catalog, get_product, create_cart, get_cart, update_cart, create_checkout, get_checkout, update_checkout, complete_checkout, cancel_checkout, get_order]
+  human_in_the_loop: required
+  description: >-
+    Search → cart → checkout → order through the store's UCP/MCP endpoint, with
+    the store's mandatory human-approval-before-payment rule, idempotency-key
+    retry discipline, and decline-code handling.

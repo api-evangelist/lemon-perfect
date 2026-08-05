@@ -1,0 +1,133 @@
+generated: '2026-08-04'
+method: derived
+source: mcp/lemon-perfect-mcp.yml + graphql/lemon-perfect-storefront-2026-07.graphql
+note: >-
+  Lemon Perfect publishes no OpenAPI. Its two machine-readable surfaces are the
+  UCP/MCP agent-commerce endpoint and the Storefront GraphQL API, both served
+  from lemonperfect.com. This crosswalk binds each MCP tool to the GraphQL
+  field(s) that back the same capability. Every GraphQL name below was verified
+  verbatim against the introspected SDL in graphql/. Because live MCP
+  `tools/list` is gated on an agent profile, bindings are made by
+  capability/semantics rather than from a returned inputSchema — confidence is
+  recorded honestly and no binding is asserted where the GraphQL surface has no
+  equivalent.
+surfaces:
+  openapi: null
+  graphql:
+    endpoint: https://lemonperfect.com/api/2026-07/graphql.json
+    schema: graphql/lemon-perfect-storefront-2026-07.graphql
+    introspection: open
+    gated: false
+    query_fields: 35
+    mutation_fields: 41
+    types: 428
+  mcp:
+    endpoint: https://lemonperfect.com/api/ucp/mcp
+    manifest: mcp/lemon-perfect-mcp.yml
+    introspection: gated
+    gated: true
+    gate: 'UCP-Agent profile URI required (HTTP 422 invalid_profile_url anonymously)'
+crosswalk:
+- tool: search_catalog
+  category: catalog
+  graphql: [search, predictiveSearch, products]
+  binding: graphql
+  confidence: high
+  note: Storefront full-text and predictive search over the product catalog.
+- tool: lookup_catalog
+  category: catalog
+  graphql: [product, productByHandle, nodes, collection]
+  binding: graphql
+  confidence: medium
+  note: Identifier-based catalog retrieval; UCP lookup accepts several id forms.
+- tool: get_product
+  category: catalog
+  graphql: [product, productByHandle]
+  binding: graphql
+  confidence: high
+- tool: create_cart
+  category: cart
+  graphql: [cartCreate]
+  binding: graphql
+  confidence: high
+- tool: get_cart
+  category: cart
+  graphql: [cart]
+  binding: graphql
+  confidence: high
+- tool: update_cart
+  category: cart
+  graphql: [cartLinesAdd, cartLinesUpdate, cartLinesRemove, cartNoteUpdate, cartAttributesUpdate, cartDiscountCodesUpdate, cartGiftCardCodesAdd]
+  binding: graphql
+  confidence: medium
+  note: Fans out — one UCP cart update maps to several fine-grained GraphQL cart mutations.
+- tool: create_checkout
+  category: checkout
+  graphql: [cartCreate, cartBuyerIdentityUpdate]
+  binding: graphql
+  confidence: low
+  note: >-
+    Shopify's Storefront API models checkout as a cart plus buyer identity; there
+    is no `checkoutCreate` mutation in the 2026-07 schema. UCP checkout is a
+    distinct server-side object, so this binding is semantic, not structural.
+- tool: get_checkout
+  category: checkout
+  graphql: [cart, cartCompletionAttempt]
+  binding: graphql
+  confidence: low
+- tool: update_checkout
+  category: checkout
+  graphql: [cartDeliveryAddressesAdd, cartDeliveryAddressesUpdate, cartDeliveryAddressesReplace, cartSelectedDeliveryOptionsUpdate, cartBuyerIdentityUpdate, cartBillingAddressUpdate]
+  binding: graphql
+  confidence: medium
+  note: Shipping address + delivery method selection, per the /agents.md flow.
+- tool: complete_checkout
+  category: checkout
+  graphql: [cartPrepareForCompletion, cartSubmitForCompletion]
+  binding: graphql
+  confidence: medium
+  note: >-
+    Both surfaces require buyer approval before payment is finalized; the store's
+    robots.txt forbids agent-completed payment without contemporaneous consent.
+mcp_only:
+- tool: cancel_cart
+  reason: No cart-deletion mutation exists in the Storefront GraphQL schema (no `cartDelete`).
+- tool: cancel_checkout
+  reason: UCP checkout is a server-side object with no Storefront GraphQL equivalent.
+- tool: get_order
+  reason: >-
+    Order retrieval is not part of the Storefront API — it lives behind the
+    Shopify Customer Account API (OIDC-authenticated), so UCP exposes an order
+    read the anonymous GraphQL surface does not.
+graphql_only:
+- capability: customer accounts
+  fields: [customerCreate, customerAccessTokenCreate, customerAccessTokenRenew, customerAccessTokenDelete, customerUpdate, customerRecover, customerReset, customerActivate, customerAddressCreate, customerAddressUpdate, customerAddressDelete, customerDefaultAddressUpdate, customer]
+  reason: Account lifecycle has no UCP shopping-service equivalent.
+- capability: content
+  fields: [blog, blogByHandle, blogs, article, articles, page, pageByHandle, pages, menu, metaobject, metaobjects]
+  reason: Editorial/CMS content is outside the UCP shopping service.
+- capability: merchandising
+  fields: [collection, collectionByHandle, collections, productRecommendations, productTags, productTypes]
+  reason: Collection browsing and recommendations are GraphQL-only reads.
+- capability: storefront metadata
+  fields: [shop, localization, locations, paymentSettings, publicApiVersions, sitemap, urlRedirects]
+  reason: Store configuration and API-version metadata.
+- capability: shop pay
+  fields: [shopPayPaymentRequestSessionCreate, shopPayPaymentRequestSessionSubmit, shopPayInstallmentsPricing]
+  reason: Shop Pay payment-request sessions are a separate payment path from UCP payment handlers.
+- capability: cart extras
+  fields: [cartClone, cartRemovePersonalData, cartMetafieldsSet, cartMetafieldDelete, cartPaymentUpdate]
+  reason: Fine-grained cart operations with no UCP tool.
+rest_only: []
+coverage:
+  tools_named: 13
+  tools_bound: 10
+  mcp_only: 3
+  graphql_query_fields: 35
+  graphql_mutation_fields: 41
+  graphql_fields_with_a_tool: 25
+  rest_operations_total: 0
+x-evidence:
+  fetched: '2026-08-04'
+  graphql_introspection: 'POST https://lemonperfect.com/api/2026-07/graphql.json — HTTP 200, 428 types'
+  mcp_tools_list: 'POST https://lemonperfect.com/api/ucp/mcp — HTTP 422, gated on UCP-Agent profile'

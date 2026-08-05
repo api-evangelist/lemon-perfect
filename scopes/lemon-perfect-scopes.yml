@@ -1,0 +1,51 @@
+generated: '2026-08-04'
+method: probed
+source: https://lemonperfect.com/.well-known/openid-configuration
+note: >-
+  Scopes are taken verbatim from the `scopes_supported` array of the OIDC
+  discovery / RFC 8414 metadata that lemonperfect.com serves for its Shopify
+  Customer Accounts authorization server. No OpenAPI oauth2 securityScheme
+  exists for this provider; nothing here is inferred.
+schemes:
+- name: CustomerAccountsOIDC
+  type: openIdConnect
+  source: well-known/lemon-perfect-openid-configuration.json
+  issuer: https://shopify.com/authentication/3205202020
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://shopify.com/authentication/3205202020/oauth/authorize
+    tokenUrl: https://shopify.com/authentication/3205202020/oauth/token
+    pkce: S256
+  - flow: refreshToken
+    tokenUrl: https://shopify.com/authentication/3205202020/oauth/token
+  - flow: jwtBearer
+    grant_type: 'urn:ietf:params:oauth:grant-type:jwt-bearer'
+    tokenUrl: https://shopify.com/authentication/3205202020/oauth/token
+scopes:
+- scope: openid
+  description: OpenID Connect — request an ID token identifying the signed-in customer.
+  flows: [authorizationCode]
+  sources: [well-known/lemon-perfect-openid-configuration.json]
+- scope: email
+  description: Release the customer's email address and email_verified claim.
+  flows: [authorizationCode]
+  sources: [well-known/lemon-perfect-openid-configuration.json]
+- scope: 'customer-account-api:full'
+  description: >-
+    Full access to the Customer Account API on behalf of the signed-in customer
+    (orders, addresses, profile, subscriptions).
+  flows: [authorizationCode, refreshToken]
+  sources: [well-known/lemon-perfect-openid-configuration.json]
+- scope: 'customer-account-mcp-api:full'
+  description: >-
+    Full access to the customer account MCP API — the authenticated,
+    customer-scoped counterpart to the store's anonymous UCP/MCP commerce
+    endpoint.
+  flows: [authorizationCode, refreshToken]
+  sources: [well-known/lemon-perfect-openid-configuration.json]
+claims_supported: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
+x-evidence:
+  fetched: '2026-08-04'
+  url: https://lemonperfect.com/.well-known/openid-configuration
+  http_status: 200
+  content_type: application/json

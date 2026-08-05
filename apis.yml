@@ -1,23 +1,170 @@
 aid: lemon-perfect
 name: Lemon Perfect
-description: 'Lemon Perfect is a company surfaced via the API Evangelist harvest backlog (source: secondary-market)
-  and added to the network as a stub for full-pipeline profiling.'
+description: >-
+  Lemon Perfect is an Atlanta-based beverage company founded in 2017 by Yanni
+  Hufnagel, making organic, zero-sugar flavored lemon water powered by half a
+  squeezed organic lemon per bottle and 100% daily value vitamin C. It sells
+  direct-to-consumer at lemonperfect.com alongside national retail distribution.
+  It is not a software vendor and publishes no developer program, yet its
+  storefront exposes a substantial machine-readable surface on its own apex
+  domain: a Storefront GraphQL API with open introspection, a hosted Model
+  Context Protocol endpoint implementing the Universal Commerce Protocol for
+  agent-driven search, cart and checkout, OpenID Connect and RFC 8414 discovery
+  for customer accounts, and first-party agent instructions at /agents.md and
+  /llms.txt that set an explicit human-approval-before-payment policy.
 url: https://raw.githubusercontent.com/api-evangelist/lemon-perfect/refs/heads/main/apis.yml
+image: https://cdn.shopify.com/s/files/1/0032/0520/2020/files/Product_Lineup_52.jpg
 x-type: company
 x-source: harvest:secondary-market
-x-tier: stub
-x-tier-reason: harvest
 specificationVersion: '0.20'
 created: '2026-08-04'
 modified: '2026-08-04'
 tags:
 - Company
-apis: []
+- Beverages
+- Consumer Packaged Goods
+- Ecommerce
+- Retail
+- Direct to Consumer
+- Agentic Commerce
+- Model Context Protocol
+- GraphQL
+- Universal Commerce Protocol
+- Shopify
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
 - FN: APIs.json
   email: info@apis.io
+apis:
+- name: Lemon Perfect Storefront GraphQL API
+  description: >-
+    The Shopify Storefront GraphQL API served on lemonperfect.com. Introspection
+    is open anonymously: 428 types, 35 query fields and 41 mutations covering
+    products, collections, search, carts, customer accounts and Shop Pay
+    payment-request sessions. Calendar-versioned in the path; 2026-07 current.
+  humanURL: https://lemonperfect.com/agents.md
+  baseURL: https://lemonperfect.com/api/2026-07/graphql.json
+  tags:
+  - GraphQL
+  - Ecommerce
+  - Products
+  - Cart
+  properties:
+  - type: GraphQL
+    url: graphql/lemon-perfect-storefront-2026-07.graphql
+  - type: DataModel
+    url: data-model/lemon-perfect-data-model.yml
+  - type: ErrorCatalog
+    url: errors/lemon-perfect-error-codes.yml
+  - type: DeclineCodes
+    url: errors/lemon-perfect-decline-codes.yml
+  - type: AgentSkill
+    url: skills/lemon-perfect-browse-catalog.md
+- name: Lemon Perfect UCP Agentic Commerce (MCP)
+  description: >-
+    A hosted Model Context Protocol endpoint implementing the Universal Commerce
+    Protocol dev.ucp.shopping service (version 2026-04-08) for agent-driven
+    catalog search, cart, checkout, fulfillment and order lookup. Advertised in
+    robots.txt, /agents.md, /llms.txt and /.well-known/ucp. tools/list is gated
+    on a resolvable UCP-Agent profile; payment requires explicit human approval.
+  humanURL: https://lemonperfect.com/agents.md
+  baseURL: https://lemonperfect.com/api/ucp/mcp
+  tags:
+  - MCP
+  - Agentic Commerce
+  - Checkout
+  properties:
+  - type: MCPServer
+    url: mcp/lemon-perfect-mcp.yml
+  - type: ToolCrosswalk
+    url: mcp/lemon-perfect-tool-crosswalk.yml
+  - type: AgentSkill
+    url: skills/lemon-perfect-agentic-purchase.md
 common:
 - type: Website
-  url: https://www.hiive.com/securities/lemon-perfect-stock
+  url: https://lemonperfect.com/
+- type: Documentation
+  url: https://lemonperfect.com/agents.md
+- type: APIReference
+  url: https://lemonperfect.com/.well-known/ucp
+- type: GettingStarted
+  url: https://lemonperfect.com/llms.txt
+- type: Blog
+  url: https://lemonperfect.com/blogs/news
+- type: BlogRSS
+  url: https://lemonperfect.com/blogs/news.atom
+- type: Support
+  url: https://lemonperfect.com/pages/contact-us
+- type: SignUp
+  url: https://lemonperfect.com/account/login
+- type: TermsOfService
+  url: https://lemonperfect.com/policies/terms-of-service
+- type: PrivacyPolicy
+  url: https://lemonperfect.com/policies/privacy-policy
+- type: RefundPolicy
+  url: https://lemonperfect.com/policies/refund-policy
+- type: ShippingPolicy
+  url: https://lemonperfect.com/policies/shipping-policy
+- type: LLMsTxt
+  url: llms/lemon-perfect-llms.txt
+- type: AgentsMd
+  url: llms/lemon-perfect-agents.md
+- type: WellKnown
+  url: well-known/lemon-perfect-well-known.yml
+- type: Authentication
+  url: authentication/lemon-perfect-authentication.yml
+- type: OAuthScopes
+  url: scopes/lemon-perfect-scopes.yml
+- type: OpenIDConnect
+  url: well-known/lemon-perfect-openid-configuration.json
+- type: Conventions
+  url: conventions/lemon-perfect-conventions.yml
+- type: Idempotency
+  url: conventions/lemon-perfect-conventions.yml
+- type: RateLimits
+  url: rate-limits/lemon-perfect-rate-limits.yml
+- type: Conformance
+  url: conformance/lemon-perfect-conformance.yml
+- type: Lifecycle
+  url: lifecycle/lemon-perfect-lifecycle.yml
+- type: DomainSecurity
+  url: security/lemon-perfect-domain-security.yml
+- type: AgentSkill
+  url: skills/_index.yml
+x-enrichment-notes:
+  no_status_page: >-
+    Lemon Perfect operates no status page for its API surface
+    (status.lemonperfect.com does not resolve; /status is 404). No StatusPage
+    pointer is emitted.
+  no_deprecation_policy: >-
+    Deprecation is signalled inside the GraphQL schema via @deprecated (54
+    fields) but no deprecation policy document is published. No Deprecation
+    pointer.
+  no_security_disclosure: >-
+    /.well-known/security.txt returns 404 and no responsible-disclosure or bug
+    bounty page was found. No Security/VulnerabilityDisclosure pointer.
+  no_compliance_program: >-
+    No trust center and no named certifications published. No Compliance or
+    TrustCenter pointer.
+  no_openapi: >-
+    No OpenAPI/Swagger document exists on lemonperfect.com or the canonical
+    the-lemon-perfect-company.myshopify.com host. The machine-readable contracts
+    are GraphQL (introspected verbatim) and the UCP/MCP OpenRPC schema.
+  no_sdks: >-
+    No first-party Lemon Perfect client library exists in any public registry.
+    No Packages/SDKs pointer.
+  no_a2a: >-
+    Both /.well-known/agent-card.json and /.well-known/agent.json returned 404.
+    Nothing was written to a2a/ — agent cards are never authored on a
+    provider's behalf.
+  platform_note: >-
+    The API surface is Shopify-provided but served from, and configured for, the
+    company's own apex domain. Platform-level facts are attributed as such inside
+    each artifact rather than claimed as first-party commitments.
+
+x-enrichment:
+  date: '2026-08-04'
+  status: enriched
+  artifacts_added: 24
+  pass: local-v1

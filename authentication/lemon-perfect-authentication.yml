@@ -1,0 +1,87 @@
+generated: '2026-08-04'
+method: probed
+source: https://lemonperfect.com/.well-known/openid-configuration
+docs: https://lemonperfect.com/agents.md
+note: >-
+  Derived from documents fetched anonymously from lemonperfect.com, not from an
+  OpenAPI securitySchemes block (Lemon Perfect publishes no OpenAPI). Three
+  distinct auth models coexist on the same host: an anonymous/public-token
+  GraphQL storefront, an OIDC-protected customer account authorization server,
+  and an agent-identity gate on the UCP/MCP commerce endpoint.
+summary:
+  types: [oauth2, openIdConnect, apiKey, agentIdentity]
+  api_key_in: [header]
+  oauth2_flows: [authorizationCode, refreshToken, jwtBearer]
+  pkce: [S256]
+schemes:
+- name: StorefrontPublicToken
+  type: apiKey
+  in: header
+  parameter_name: X-Shopify-Storefront-Access-Token
+  applies_to: https://lemonperfect.com/api/{version}/graphql.json
+  description: >-
+    Shopify Storefront API public access token. Intended to be embedded in
+    client code — it scopes an app to public storefront data only.
+  observed: >-
+    Anonymous introspection and anonymous `{shop{name}}` queries both returned
+    HTTP 200 without a token on 2026-08-04, so read access to this surface is
+    effectively open.
+  sources: [graphql/lemon-perfect-storefront-2026-07.graphql]
+- name: CustomerAccountsOIDC
+  type: openIdConnect
+  openIdConnectUrl: https://lemonperfect.com/.well-known/openid-configuration
+  issuer: https://shopify.com/authentication/3205202020
+  authorization_endpoint: https://shopify.com/authentication/3205202020/oauth/authorize
+  token_endpoint: https://shopify.com/authentication/3205202020/oauth/token
+  end_session_endpoint: https://shopify.com/authentication/3205202020/logout
+  jwks_uri: https://shopify.com/authentication/3205202020/.well-known/jwks.json
+  response_types_supported: [code]
+  grant_types_supported: [authorization_code, refresh_token, 'urn:ietf:params:oauth:grant-type:jwt-bearer']
+  token_endpoint_auth_methods_supported: [client_secret_basic]
+  code_challenge_methods_supported: [S256]
+  id_token_signing_alg_values_supported: [RS256]
+  subject_types_supported: [public]
+  claims_supported: [iss, sub, aud, exp, iat, nonce, sid, email, email_verified]
+  scopes_supported: [openid, email, 'customer-account-api:full', 'customer-account-mcp-api:full']
+  description: >-
+    Shopify Customer Accounts authorization server bound to this store
+    (shop id 3205202020). Guards the Customer Account API and the customer
+    account MCP API.
+  sources: [well-known/lemon-perfect-openid-configuration.json]
+- name: CustomerAccessToken
+  type: http
+  scheme: bearer
+  applies_to: 'Storefront GraphQL customer* fields and mutations'
+  description: >-
+    Legacy Storefront customer access token minted by the
+    `customerAccessTokenCreate` mutation and passed as `customerAccessToken` on
+    customer queries/mutations. Verified present in the 2026-07 SDL.
+  sources: [graphql/lemon-perfect-storefront-2026-07.graphql]
+- name: UCPAgentProfile
+  type: agentIdentity
+  in: header
+  parameter_name: UCP-Agent
+  applies_to: https://lemonperfect.com/api/ucp/mcp
+  description: >-
+    The UCP/MCP endpoint refuses anonymous JSON-RPC calls. The caller must
+    supply a `ucp-agent.profile` URI (mapped to the HTTP UCP-Agent header)
+    resolving to a fetchable platform UCP profile document.
+  observed_failure:
+    http_status: 422
+    jsonrpc_error_code: -32001
+    code: invalid_profile_url
+    message: 'Unable to fetch agent profile: Missing profile uri'
+  sources: [mcp/lemon-perfect-mcp.yml]
+buyer_consent:
+  required_for: [complete_checkout, payment]
+  policy_url: https://lemonperfect.com/robots.txt
+  description: >-
+    Payment authorization is explicitly reserved to a human. Agents may not
+    finalize a checkout without contemporaneous buyer approval.
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemonperfect.com/.well-known/openid-configuration', http_status: 200}
+  - {url: 'https://lemonperfect.com/.well-known/oauth-authorization-server', http_status: 200}
+  - {url: 'https://lemonperfect.com/api/2026-07/graphql.json', http_status: 200}
+  - {url: 'https://lemonperfect.com/api/ucp/mcp', http_status: 422}

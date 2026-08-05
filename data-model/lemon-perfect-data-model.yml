@@ -1,0 +1,292 @@
+generated: '2026-08-04'
+method: derived
+source: graphql/lemon-perfect-storefront-2026-07.graphql
+note: 'Entity-relationship graph derived from the introspected Storefront GraphQL schema. Relationships
+  are read from field return types: a *Connection return is has_many, a direct object return is has_one.
+  Only the commerce-core entities are included; the full schema carries 428 types.'
+identity:
+  scheme: GraphQL global object identifiers (Node interface, base64 gid:// URIs)
+  lookup_fields:
+  - node
+  - nodes
+  handles: Products, collections, blogs, articles and pages also address by URL handle.
+entities:
+- entity: Product
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  - OnlineStorePublishable
+  - Trackable
+  relationships:
+  - type: has_one
+    target: ProductVariant
+    via: adjacentVariants
+  - type: has_many
+    target: Collection
+    via: collections
+  - type: has_one
+    target: Image
+    via: featuredImage
+  - type: has_many
+    target: Image
+    via: images
+  - type: has_many
+    target: Media
+    via: media
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+  - type: has_one
+    target: ProductVariant
+    via: selectedOrFirstAvailableVariant
+  - type: has_many
+    target: SellingPlanGroup
+    via: sellingPlanGroups
+  - type: has_one
+    target: ProductVariant
+    via: variantBySelectedOptions
+  - type: has_many
+    target: ProductVariant
+    via: variants
+- entity: ProductVariant
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_one
+    target: Image
+    via: image
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+  - type: has_one
+    target: Product
+    via: product
+- entity: Collection
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  - OnlineStorePublishable
+  - Trackable
+  relationships:
+  - type: has_one
+    target: Image
+    via: image
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+  - type: has_many
+    target: Product
+    via: products
+- entity: Cart
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_many
+    target: CartDeliveryGroup
+    via: deliveryGroups
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: ComponentizableCartLine
+  kind: object
+  interfaces:
+  - BaseCartLine
+  - Node
+  relationships:
+  - type: has_one
+    target: CartLine
+    via: lineComponents
+- entity: Order
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_one
+    target: MailingAddress
+    via: billingAddress
+  - type: has_many
+    target: DiscountApplication
+    via: discountApplications
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+  - type: has_one
+    target: MailingAddress
+    via: shippingAddress
+- entity: Customer
+  kind: object
+  interfaces:
+  - HasMetafields
+  relationships:
+  - type: has_many
+    target: MailingAddress
+    via: addresses
+  - type: has_one
+    target: MailingAddress
+    via: defaultAddress
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+  - type: has_many
+    target: Order
+    via: orders
+- entity: Media
+  kind: interface
+  interfaces: []
+  relationships:
+  - type: has_one
+    target: Image
+    via: previewImage
+- entity: SellingPlan
+  kind: object
+  interfaces:
+  - HasMetafields
+  relationships:
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: SellingPlanGroup
+  kind: object
+  interfaces: []
+  relationships:
+  - type: has_many
+    target: SellingPlan
+    via: sellingPlans
+- entity: Blog
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  - OnlineStorePublishable
+  relationships:
+  - type: has_one
+    target: Article
+    via: articleByHandle
+  - type: has_many
+    target: Article
+    via: articles
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: Article
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  - OnlineStorePublishable
+  - Trackable
+  relationships:
+  - type: has_one
+    target: Blog
+    via: blog
+  - type: has_one
+    target: Image
+    via: image
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: Page
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  - OnlineStorePublishable
+  - Trackable
+  relationships:
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: Shop
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: CartDeliveryGroup
+  kind: object
+  interfaces: []
+  relationships:
+  - type: has_one
+    target: MailingAddress
+    via: deliveryAddress
+  - type: has_one
+    target: CartDeliveryOption
+    via: deliveryOptions
+  - type: has_one
+    target: CartDeliveryOption
+    via: selectedDeliveryOption
+- entity: Location
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+- entity: Market
+  kind: object
+  interfaces:
+  - HasMetafields
+  - Node
+  relationships:
+  - type: has_one
+    target: Metafield
+    via: metafield
+  - type: has_one
+    target: Metafield
+    via: metafields
+totals:
+  schema_types: 428
+  entities_mapped: 17
+  relationships: 56
+x-evidence:
+  fetched: '2026-08-04'
+  url: https://lemonperfect.com/api/2026-07/graphql.json
+  http_status: 200

@@ -1,0 +1,46 @@
+generated: '2026-08-04'
+method: probed
+source: >-
+  Response headers observed on https://lemonperfect.com/api/2026-07/graphql.json
+  and the agent policy published at https://lemonperfect.com/agents.md
+note: >-
+  Lemon Perfect publishes no rate-limit reference page. Everything below was
+  observed on a live anonymous request or read from a document the store serves
+  itself. No numeric quota is published, so none is asserted.
+limits:
+- surface: storefront-graphql
+  endpoint: https://lemonperfect.com/api/2026-07/graphql.json
+  model: query-cost
+  limit_count: null
+  window: null
+  signal_headers: [shopify-complexity-score, shopify-complexity-score-v2]
+  signal_body: extensions.cost.requestedQueryCost
+  observed:
+  - {query: '{shop{name}}', shopify-complexity-score: 0, shopify-complexity-score-v2: 9}
+  - {query: '{__schema{queryType{name}}}', requestedQueryCost: 3}
+  exhaustion_signal: 'GraphQL THROTTLED error in errors[] (extensions.code)'
+  documented: false
+  note: >-
+    Cost is returned on every response, so an agent can measure its own burn
+    rate, but neither the bucket size nor the restore rate is advertised on
+    this host.
+- surface: ucp-mcp
+  endpoint: https://lemonperfect.com/api/ucp/mcp
+  model: per-ip
+  limit_count: null
+  window: null
+  exhaustion_signal: 'HTTP 429'
+  policy: 'The MCP endpoint is rate-limited per IP. Back off on 429 responses.'
+  policy_source: https://lemonperfect.com/agents.md
+  documented: true
+- surface: storefront-json
+  endpoints: ['/products.json', '/collections/{handle}/products.json', '/cart.js', '/search/suggest.json']
+  model: unpublished
+  limit_count: null
+  pagination_cap: 250
+  note: 'Read-only JSON endpoints listed in /llms.txt; no rate-limit signal observed in headers.'
+x-evidence:
+  fetched: '2026-08-04'
+  urls:
+  - {url: 'https://lemonperfect.com/api/2026-07/graphql.json', http_status: 200}
+  - {url: 'https://lemonperfect.com/agents.md', http_status: 200}

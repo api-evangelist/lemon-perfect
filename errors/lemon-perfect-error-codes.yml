@@ -1,0 +1,364 @@
+generated: '2026-08-04'
+method: derived
+source: graphql/lemon-perfect-storefront-2026-07.graphql
+format: graphql-user-errors
+note: 'Lemon Perfect publishes no OpenAPI, so there are no HTTP 4xx/5xx response objects to derive from.
+  Its real error registry is the typed userError code enums in the Storefront GraphQL schema served at
+  https://lemonperfect.com/api/2026-07/graphql.json, captured verbatim by introspection on 2026-08-04.
+  Business failures arrive as data on a HTTP 200 response (the DisplayableError interface: field, message,
+  code); transport and validation failures arrive in the GraphQL top-level errors[] array.'
+envelope:
+  interface: DisplayableError
+  fields:
+  - field
+  - message
+  - code
+  transport: HTTP 200 + errors[] (GraphQL) — domain errors returned as typed userErrors payloads
+  error_types:
+  - CartOperationError
+  - CartUserError
+  - CompletionError
+  - CustomerUserError
+  - MetafieldDeleteUserError
+  - MetafieldsSetUserError
+  - SubmissionError
+  - UserError
+  - UserErrorsShopPayPaymentRequestSessionUserErrors
+jsonrpc_envelope:
+  surface: https://lemonperfect.com/api/ucp/mcp
+  shape: '{ jsonrpc, id, error: { code, message, data: { code, content, continue_url } } }'
+  observed:
+  - code: -32001
+    message: UCP discovery failed
+    data_code: invalid_profile_url
+    meaning: Caller did not present a resolvable UCP-Agent profile URI
+    http_status: 422
+families:
+- enum: CartErrorCode
+  count: 58
+  description: Error codes returned by [`CartUserError`](https://shopify.dev/docs/api/storefront/current/objects/CartUserError)
+    during cart mutations. Covers validation failures for addresses, quantities, delivery options, merchandise
+    lines, discount codes, and metafields.
+  codes:
+  - code: INVALID
+    description: The input value is invalid.
+  - code: LESS_THAN
+    description: The input value should be less than the maximum value allowed.
+  - code: INVALID_MERCHANDISE_LINE
+    description: Merchandise line was not found in cart.
+  - code: MERCHANDISE_NOT_APPLICABLE
+    description: Item cannot be purchased as configured.
+  - code: MERCHANDISE_LINE_TRANSFORMERS_RUN_ERROR
+    description: An error occurred while processing cart transformations.
+  - code: MISSING_DISCOUNT_CODE
+    description: Missing discount code.
+  - code: MISSING_NOTE
+    description: Missing note.
+  - code: NOTE_TOO_LONG
+    description: The note length must be below the specified maximum.
+  - code: INVALID_DELIVERY_GROUP
+    description: Delivery group was not found in cart.
+  - code: INVALID_DELIVERY_OPTION
+    description: Delivery option was not valid.
+  - code: PENDING_DELIVERY_GROUPS
+    description: The delivery group is in a pending state.
+  - code: INVALID_PAYMENT
+    description: The payment wasn't valid.
+  - code: PAYMENT_METHOD_NOT_SUPPORTED
+    description: The payment method is not supported.
+  - code: PAYMENT_METHOD_NOT_APPLICABLE
+    description: The payment method is not applicable.
+  - code: INVALID_PAYMENT_DEFERRED_PAYMENT_REQUIRED
+    description: The payment is invalid. Deferred payment is required.
+  - code: INVALID_PAYMENT_EMPTY_CART
+    description: Cannot update payment on an empty cart
+  - code: VALIDATION_CUSTOM
+    description: Validation failed.
+  - code: INVALID_METAFIELDS
+    description: The metafields were not valid.
+  - code: MISSING_CUSTOMER_ACCESS_TOKEN
+    description: The customer access token is required when setting a company location.
+  - code: INVALID_COMPANY_LOCATION
+    description: Company location not found or not allowed.
+  - code: INVALID_INCREMENT
+    description: The quantity must be a multiple of the specified increment.
+  - code: MINIMUM_NOT_MET
+    description: The quantity must be above the specified minimum for the item.
+  - code: MAXIMUM_EXCEEDED
+    description: The quantity must be below the specified maximum for the item.
+  - code: TOO_MANY_DELIVERY_ADDRESSES
+    description: Too many delivery addresses on Cart.
+  - code: ONLY_ONE_DELIVERY_ADDRESS_CAN_BE_SELECTED
+    description: Only one delivery address can be selected.
+  - code: INVALID_DELIVERY_ADDRESS_ID
+    description: The delivery address was not found.
+  - code: BUYER_CANNOT_PURCHASE_FOR_COMPANY_LOCATION
+    description: Buyer cannot purchase for company location.
+  - code: BUNDLES_AND_ADDONS_CANNOT_BE_MIXED
+    description: Bundles and addons cannot be mixed.
+  - code: PARENT_LINE_INVALID_REFERENCE
+    description: Cannot reference existing parent lines by variant_id.
+  - code: PARENT_LINE_NOT_FOUND
+    description: Parent line not found.
+  - code: PARENT_LINE_NESTING_TOO_DEEP
+    description: Parent line nesting is too deep or circular.
+  - code: PARENT_LINE_OPERATION_BLOCKED
+    description: Nested cartlines are blocked due to an incompatibility.
+  - code: GIFT_CARD_RECIPIENT_INVALID
+    description: The specified gift card recipient is invalid.
+  - code: ADDRESS_FIELD_IS_REQUIRED
+    description: The specified address field is required.
+  - code: ADDRESS_FIELD_IS_TOO_LONG
+    description: The specified address field is too long.
+  - code: ADDRESS_FIELD_CONTAINS_EMOJIS
+    description: The specified address field contains emojis.
+  - code: ADDRESS_FIELD_CONTAINS_HTML_TAGS
+    description: The specified address field contains HTML tags.
+  - code: ADDRESS_FIELD_CONTAINS_URL
+    description: The specified address field contains a URL.
+  - code: ADDRESS_FIELD_DOES_NOT_MATCH_EXPECTED_PATTERN
+    description: The specified address field does not match the expected pattern.
+  - code: INVALID_ZIP_CODE_FOR_PROVINCE
+    description: The given zip code is invalid for the provided province.
+  - code: INVALID_ZIP_CODE_FOR_COUNTRY
+    description: The given zip code is invalid for the provided country.
+  - code: ZIP_CODE_NOT_SUPPORTED
+    description: The given zip code is unsupported.
+  - code: PROVINCE_NOT_FOUND
+    description: The given province cannot be found.
+  - code: UNSPECIFIED_ADDRESS_ERROR
+    description: A general error occurred during address validation.
+  - code: PAYMENTS_CREDIT_CARD_BASE_EXPIRED
+    description: Credit card has expired.
+  - code: PAYMENTS_CREDIT_CARD_BASE_GATEWAY_NOT_SUPPORTED
+    description: Credit card gateway is not supported.
+  - code: PAYMENTS_CREDIT_CARD_GENERIC
+    description: Credit card error.
+  - code: PAYMENTS_CREDIT_CARD_MONTH_INCLUSION
+    description: Credit card month is invalid.
+  - code: PAYMENTS_CREDIT_CARD_NUMBER_INVALID
+    description: Credit card number is invalid.
+  - code: PAYMENTS_CREDIT_CARD_NUMBER_INVALID_FORMAT
+    description: Credit card number format is invalid.
+  - code: PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_BLANK
+    description: Credit card verification value is blank.
+  - code: PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_INVALID_FOR_CARD_TYPE
+    description: Credit card verification value is invalid for card type.
+  - code: PAYMENTS_CREDIT_CARD_YEAR_EXPIRED
+    description: Credit card has expired.
+  - code: PAYMENTS_CREDIT_CARD_YEAR_INVALID_EXPIRY_YEAR
+    description: Credit card expiry year is invalid.
+  - code: VARIANT_REQUIRES_SELLING_PLAN
+    description: Variant can only be purchased with a selling plan.
+  - code: SELLING_PLAN_NOT_APPLICABLE
+    description: Selling plan is not applicable.
+  - code: SERVICE_UNAVAILABLE
+    description: An error occurred while saving the cart.
+  - code: CART_TOO_LARGE
+    description: The cart is too large to save.
+- enum: CompletionErrorCode
+  count: 13
+  description: The code of the error that occurred during a cart completion attempt.
+  codes:
+  - code: ERROR
+  - code: INVENTORY_RESERVATION_ERROR
+  - code: PAYMENT_ERROR
+  - code: PAYMENT_TRANSIENT_ERROR
+  - code: PAYMENT_AMOUNT_TOO_SMALL
+  - code: PAYMENT_GATEWAY_NOT_ENABLED_ERROR
+  - code: PAYMENT_INSUFFICIENT_FUNDS
+  - code: PAYMENT_INVALID_PAYMENT_METHOD
+  - code: PAYMENT_INVALID_CURRENCY
+  - code: PAYMENT_INVALID_CREDIT_CARD
+  - code: PAYMENT_INVALID_BILLING_ADDRESS
+  - code: PAYMENT_CARD_DECLINED
+  - code: PAYMENT_CALL_ISSUER
+- enum: CustomerErrorCode
+  count: 15
+  description: Error codes returned by the [`CustomerUserError`](https://shopify.dev/docs/api/storefront/current/objects/CustomerUserError)
+    object. These codes identify specific validation and processing failures for customer-related mutations,
+    including account creation, updates, password resets, and address management.
+  codes:
+  - code: BLANK
+    description: The input value is blank.
+  - code: INVALID
+    description: The input value is invalid.
+  - code: TAKEN
+    description: The input value is already taken.
+  - code: TOO_LONG
+    description: The input value is too long.
+  - code: TOO_SHORT
+    description: The input value is too short.
+  - code: UNIDENTIFIED_CUSTOMER
+    description: Unidentified customer.
+  - code: CUSTOMER_DISABLED
+    description: Customer is disabled.
+  - code: PASSWORD_STARTS_OR_ENDS_WITH_WHITESPACE
+    description: Input password starts or ends with whitespace.
+  - code: CONTAINS_HTML_TAGS
+    description: Input contains HTML tags.
+  - code: CONTAINS_URL
+    description: Input contains URL.
+  - code: TOKEN_INVALID
+    description: Invalid activation token.
+  - code: ALREADY_ENABLED
+    description: Customer already enabled.
+  - code: NOT_FOUND
+    description: Address does not exist.
+  - code: BAD_DOMAIN
+    description: Input email contains an invalid domain name.
+  - code: INVALID_MULTIPASS_REQUEST
+    description: Multipass token is not valid.
+- enum: MetafieldDeleteErrorCode
+  count: 3
+  description: Possible error codes that can be returned by `MetafieldDeleteUserError`.
+  codes:
+  - code: INVALID_OWNER
+    description: The owner ID is invalid.
+  - code: METAFIELD_DOES_NOT_EXIST
+    description: Metafield not found.
+  - code: APP_NOT_AUTHORIZED
+    description: The current app is not authorized to perform this action.
+- enum: MetafieldsSetUserErrorCode
+  count: 10
+  description: Possible error codes that can be returned by `MetafieldsSetUserError`.
+  codes:
+  - code: BLANK
+    description: The input value is blank.
+  - code: INCLUSION
+    description: The input value isn't included in the list.
+  - code: LESS_THAN_OR_EQUAL_TO
+    description: The input value should be less than or equal to the maximum value allowed.
+  - code: PRESENT
+    description: The input value needs to be blank.
+  - code: TOO_SHORT
+    description: The input value is too short.
+  - code: TOO_LONG
+    description: The input value is too long.
+  - code: INVALID_OWNER
+    description: The owner ID is invalid.
+  - code: INVALID_VALUE
+    description: The value is invalid for metafield type or for definition options.
+  - code: INVALID_TYPE
+    description: The type is invalid.
+  - code: APP_NOT_AUTHORIZED
+    description: The current app is not authorized to perform this action.
+- enum: SubmissionErrorCode
+  count: 95
+  description: The code of the error that occurred during cart submit for completion.
+  codes:
+  - code: ERROR
+  - code: NO_DELIVERY_GROUP_SELECTED
+  - code: BUYER_IDENTITY_EMAIL_IS_INVALID
+  - code: BUYER_IDENTITY_EMAIL_REQUIRED
+  - code: BUYER_IDENTITY_PHONE_IS_INVALID
+  - code: DELIVERY_ADDRESS1_INVALID
+  - code: DELIVERY_ADDRESS1_REQUIRED
+  - code: DELIVERY_ADDRESS1_TOO_LONG
+  - code: DELIVERY_ADDRESS2_INVALID
+  - code: DELIVERY_ADDRESS2_REQUIRED
+  - code: DELIVERY_ADDRESS2_TOO_LONG
+  - code: DELIVERY_CITY_INVALID
+  - code: DELIVERY_CITY_REQUIRED
+  - code: DELIVERY_CITY_TOO_LONG
+  - code: DELIVERY_COMPANY_INVALID
+  - code: DELIVERY_COMPANY_REQUIRED
+  - code: DELIVERY_COMPANY_TOO_LONG
+  - code: DELIVERY_COUNTRY_REQUIRED
+  - code: DELIVERY_FIRST_NAME_INVALID
+  - code: DELIVERY_FIRST_NAME_REQUIRED
+  - code: DELIVERY_FIRST_NAME_TOO_LONG
+  - code: DELIVERY_INVALID_POSTAL_CODE_FOR_COUNTRY
+  - code: DELIVERY_INVALID_POSTAL_CODE_FOR_ZONE
+  - code: DELIVERY_LAST_NAME_INVALID
+  - code: DELIVERY_LAST_NAME_REQUIRED
+  - code: DELIVERY_LAST_NAME_TOO_LONG
+  - code: DELIVERY_NO_DELIVERY_AVAILABLE
+  - code: DELIVERY_NO_DELIVERY_AVAILABLE_FOR_MERCHANDISE_LINE
+  - code: DELIVERY_OPTIONS_PHONE_NUMBER_INVALID
+  - code: DELIVERY_OPTIONS_PHONE_NUMBER_REQUIRED
+  - code: DELIVERY_PHONE_NUMBER_INVALID
+  - code: DELIVERY_PHONE_NUMBER_REQUIRED
+  - code: DELIVERY_POSTAL_CODE_INVALID
+  - code: DELIVERY_POSTAL_CODE_REQUIRED
+  - code: DELIVERY_ZONE_NOT_FOUND
+  - code: DELIVERY_ZONE_REQUIRED_FOR_COUNTRY
+  - code: DELIVERY_ADDRESS_REQUIRED
+  - code: MERCHANDISE_NOT_APPLICABLE
+  - code: MERCHANDISE_LINE_LIMIT_REACHED
+  - code: MERCHANDISE_NOT_ENOUGH_STOCK_AVAILABLE
+  - code: MERCHANDISE_OUT_OF_STOCK
+  - code: MERCHANDISE_PRODUCT_NOT_PUBLISHED
+  - code: PAYMENTS_ADDRESS1_INVALID
+  - code: PAYMENTS_ADDRESS1_REQUIRED
+  - code: PAYMENTS_ADDRESS1_TOO_LONG
+  - code: PAYMENTS_ADDRESS2_INVALID
+  - code: PAYMENTS_ADDRESS2_REQUIRED
+  - code: PAYMENTS_ADDRESS2_TOO_LONG
+  - code: PAYMENTS_CITY_INVALID
+  - code: PAYMENTS_CITY_REQUIRED
+  - code: PAYMENTS_CITY_TOO_LONG
+  - code: PAYMENTS_COMPANY_INVALID
+  - code: PAYMENTS_COMPANY_REQUIRED
+  - code: PAYMENTS_COMPANY_TOO_LONG
+  - code: PAYMENTS_COUNTRY_REQUIRED
+  - code: PAYMENTS_CREDIT_CARD_BASE_EXPIRED
+  - code: PAYMENTS_CREDIT_CARD_BASE_GATEWAY_NOT_SUPPORTED
+  - code: PAYMENTS_CREDIT_CARD_BASE_INVALID_START_DATE_OR_ISSUE_NUMBER_FOR_DEBIT
+  - code: PAYMENTS_CREDIT_CARD_BRAND_NOT_SUPPORTED
+  - code: PAYMENTS_CREDIT_CARD_FIRST_NAME_BLANK
+  - code: PAYMENTS_CREDIT_CARD_GENERIC
+  - code: PAYMENTS_CREDIT_CARD_LAST_NAME_BLANK
+  - code: PAYMENTS_CREDIT_CARD_MONTH_INCLUSION
+  - code: PAYMENTS_CREDIT_CARD_NAME_INVALID
+  - code: PAYMENTS_CREDIT_CARD_NUMBER_INVALID
+  - code: PAYMENTS_CREDIT_CARD_NUMBER_INVALID_FORMAT
+  - code: PAYMENTS_CREDIT_CARD_SESSION_ID
+  - code: PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_BLANK
+  - code: PAYMENTS_CREDIT_CARD_VERIFICATION_VALUE_INVALID_FOR_CARD_TYPE
+  - code: PAYMENTS_CREDIT_CARD_YEAR_EXPIRED
+  - code: PAYMENTS_CREDIT_CARD_YEAR_INVALID_EXPIRY_YEAR
+  - code: PAYMENTS_FIRST_NAME_INVALID
+  - code: PAYMENTS_FIRST_NAME_REQUIRED
+  - code: PAYMENTS_FIRST_NAME_TOO_LONG
+  - code: PAYMENTS_INVALID_POSTAL_CODE_FOR_COUNTRY
+  - code: PAYMENTS_INVALID_POSTAL_CODE_FOR_ZONE
+  - code: PAYMENTS_LAST_NAME_INVALID
+  - code: PAYMENTS_LAST_NAME_REQUIRED
+  - code: PAYMENTS_LAST_NAME_TOO_LONG
+  - code: PAYMENTS_METHOD_UNAVAILABLE
+  - code: PAYMENTS_METHOD_REQUIRED
+  - code: PAYMENTS_UNACCEPTABLE_PAYMENT_AMOUNT
+  - code: PAYMENTS_PHONE_NUMBER_INVALID
+  - code: PAYMENTS_PHONE_NUMBER_REQUIRED
+  - code: PAYMENTS_POSTAL_CODE_INVALID
+  - code: PAYMENTS_POSTAL_CODE_REQUIRED
+  - code: PAYMENTS_SHOPIFY_PAYMENTS_REQUIRED
+  - code: PAYMENTS_WALLET_CONTENT_MISSING
+  - code: PAYMENTS_BILLING_ADDRESS_ZONE_NOT_FOUND
+  - code: PAYMENTS_BILLING_ADDRESS_ZONE_REQUIRED_FOR_COUNTRY
+  - code: REDIRECT_TO_CHECKOUT_REQUIRED
+    description: Redirect to checkout required to complete this action.
+  - code: TAXES_MUST_BE_DEFINED
+  - code: TAXES_LINE_ID_NOT_FOUND
+  - code: TAXES_DELIVERY_GROUP_ID_NOT_FOUND
+  - code: VALIDATION_CUSTOM
+    description: Validation failed.
+- enum: UserErrorsShopPayPaymentRequestSessionUserErrorsCode
+  count: 3
+  description: Possible error codes that can be returned by `ShopPayPaymentRequestSessionUserErrors`.
+  codes:
+  - code: PAYMENT_REQUEST_INVALID_INPUT
+    description: Payment request input is invalid.
+  - code: PAYMENT_REQUEST_NOT_FOUND
+    description: Payment request not found.
+  - code: IDEMPOTENCY_KEY_ALREADY_USED
+    description: Idempotency key has already been used.
+totals:
+  enums: 7
+  codes: 197
+x-evidence:
+  fetched: '2026-08-04'
+  url: https://lemonperfect.com/api/2026-07/graphql.json
+  http_status: 200
+  method: GraphQL introspection
