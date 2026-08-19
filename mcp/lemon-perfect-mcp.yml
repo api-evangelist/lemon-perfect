@@ -3,13 +3,11 @@ method: searched
 status: published
 source: https://lemonperfect.com/.well-known/ucp
 docs: https://lemonperfect.com/agents.md
-summary: >-
-  Lemon Perfect publishes a live, hosted MCP endpoint on its own apex domain as
-  the transport for the Universal Commerce Protocol (UCP) shopping service. The
-  endpoint is advertised in three places the company serves itself — robots.txt,
-  /agents.md, /llms.txt — and formally described by the UCP merchant profile at
-  /.well-known/ucp. This is an agentic-commerce surface (search, cart, checkout,
-  order), not a developer platform API.
+summary: Lemon Perfect publishes a live, hosted MCP endpoint on its own apex domain as the transport for
+  the Universal Commerce Protocol (UCP) shopping service. The endpoint is advertised in three places the
+  company serves itself — robots.txt, /agents.md, /llms.txt — and formally described by the UCP merchant
+  profile at /.well-known/ucp. This is an agentic-commerce surface (search, cart, checkout, order), not
+  a developer platform API.
 server:
   name: lemon-perfect-ucp
   transport: http
@@ -28,99 +26,126 @@ server:
   spec: https://ucp.dev/2026-04-08/specification/overview/
 introspection:
   attempted: '2026-08-04'
-  method: 'POST tools/list (JSON-RPC 2.0)'
+  method: POST tools/list (JSON-RPC 2.0)
   http_status: 422
   gated: true
   error_code: -32001
-  error: 'UCP discovery failed / invalid_profile_url — "Unable to fetch agent profile: Missing profile uri"'
-  note: >-
-    tools/list is gated on agent identity: the caller must present a resolvable
-    UCP agent profile (the `ucp-agent.profile` URI, mapped to the HTTP UCP-Agent
-    header). Anonymous introspection is refused, so the tool list below is taken
-    from the OpenRPC schema the store's own UCP profile points at, plus the flow
-    the company documents in /agents.md — not from a live tools/list response.
-    Input schemas require an authenticated (profile-bearing) introspection.
+  error: 'UCP discovery failed / invalid_profile_url — "Unable to fetch agent profile: Missing profile
+    uri"'
+  note: 'tools/list is gated on agent identity: the caller must present a resolvable UCP agent profile
+    (the `ucp-agent.profile` URI, mapped to the HTTP UCP-Agent header). Anonymous introspection is refused,
+    so the tool list below is taken from the OpenRPC schema the store''s own UCP profile points at, plus
+    the flow the company documents in /agents.md — not from a live tools/list response. Input schemas
+    require an authenticated (profile-bearing) introspection.'
 tools_source: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
 tools:
 - name: search_catalog
   category: catalog
   description: Search the store catalog for products matching a buyer's intent.
-  params: [meta, catalog]
+  params:
+  - meta
+  - catalog
   capability: dev.ucp.shopping.catalog.search
   documented_in_agents_md: true
 - name: lookup_catalog
   category: catalog
   description: Look up specific catalog entries by identifier.
-  params: [meta, catalog]
+  params:
+  - meta
+  - catalog
   capability: dev.ucp.shopping.catalog.lookup
   documented_in_agents_md: false
 - name: get_product
   category: catalog
   description: Retrieve a single product record.
-  params: [meta, catalog]
+  params:
+  - meta
+  - catalog
   capability: dev.ucp.shopping.catalog.lookup
   documented_in_agents_md: false
 - name: create_cart
   category: cart
   description: Create a cart and add the desired items.
-  params: [meta, cart]
+  params:
+  - meta
+  - cart
   capability: dev.ucp.shopping.cart
   documented_in_agents_md: true
 - name: get_cart
   category: cart
   description: Retrieve an existing cart by id.
-  params: [meta, id]
+  params:
+  - meta
+  - id
   capability: dev.ucp.shopping.cart
   documented_in_agents_md: false
 - name: update_cart
   category: cart
   description: Update the contents of an existing cart.
-  params: [meta, id, cart]
+  params:
+  - meta
+  - id
+  - cart
   capability: dev.ucp.shopping.cart
   documented_in_agents_md: false
 - name: cancel_cart
   category: cart
   description: Cancel/abandon a cart.
-  params: [meta, id]
+  params:
+  - meta
+  - id
   capability: dev.ucp.shopping.cart
   documented_in_agents_md: false
 - name: create_checkout
   category: checkout
   description: Start the purchase flow from a cart.
-  params: [meta, checkout]
+  params:
+  - meta
+  - checkout
   capability: dev.ucp.shopping.checkout
   documented_in_agents_md: true
 - name: get_checkout
   category: checkout
   description: Retrieve a checkout by id.
-  params: [meta, id]
+  params:
+  - meta
+  - id
   capability: dev.ucp.shopping.checkout
   documented_in_agents_md: false
 - name: update_checkout
   category: checkout
   description: Set shipping address and delivery method on a checkout.
-  params: [meta, id, checkout]
+  params:
+  - meta
+  - id
+  - checkout
   capability: dev.ucp.shopping.fulfillment
   documented_in_agents_md: true
 - name: complete_checkout
   category: checkout
-  description: >-
-    Finalize the purchase. The buyer must explicitly approve payment — the store
-    forbids agent-completed checkout without contemporaneous human approval.
-  params: [meta, id, checkout]
+  description: Finalize the purchase. The buyer must explicitly approve payment — the store forbids agent-completed
+    checkout without contemporaneous human approval.
+  params:
+  - meta
+  - id
+  - checkout
   capability: dev.ucp.shopping.checkout
   human_in_the_loop: required
   documented_in_agents_md: true
 - name: cancel_checkout
   category: checkout
   description: Cancel an in-flight checkout.
-  params: [meta, id]
+  params:
+  - meta
+  - id
   capability: dev.ucp.shopping.checkout
   documented_in_agents_md: false
 - name: get_order
   category: order
   description: Retrieve an order by id.
-  params: [meta, id]
+  params:
+  - meta
+  - id
   capability: dev.ucp.shopping.order
   documented_in_agents_md: false
 capabilities:
@@ -136,32 +161,59 @@ payment_handlers:
 - id: gpay
   handler: com.google.pay
   version: '2026-01-11'
-  card_networks: [VISA, MASTERCARD, AMEX, DISCOVER]
+  card_networks:
+  - VISA
+  - MASTERCARD
+  - AMEX
+  - DISCOVER
 - id: shopify.card
   handler: dev.shopify.card
   version: '2026-01-15'
-  card_brands: [visa, master, american_express, discover, diners_club]
+  card_brands:
+  - visa
+  - master
+  - american_express
+  - discover
+  - diners_club
 - id: shop_pay
   handler: dev.shopify.shop_pay
   version: '2026-04-08'
 governance:
   buyer_approval_required: true
   policy_source: https://lemonperfect.com/robots.txt
-  policy: >-
-    "Checkouts are for humans. Do NOT complete checkout, payment, or order
-    placement automatically — no scripted form fills, browser automation, or
-    end-to-end agent flows that finalize payment without an explicit,
-    contemporaneous human approval step."
+  policy: '"Checkouts are for humans. Do NOT complete checkout, payment, or order placement automatically
+    — no scripted form fills, browser automation, or end-to-end agent flows that finalize payment without
+    an explicit, contemporaneous human approval step."'
   rate_limits: MCP endpoint is rate-limited per IP; agents must back off on 429.
-  identity: 'UCP-Agent header carrying a resolvable agent profile URI (required)'
-  idempotency: 'Idempotency-Key HTTP header (UUID), per the UCP meta schema'
+  identity: UCP-Agent header carrying a resolvable agent profile URI (required)
+  idempotency: Idempotency-Key HTTP header (UUID), per the UCP meta schema
   alternative_channel: https://shop.app/SKILL.md
 x-evidence:
   fetched: '2026-08-04'
   urls:
-  - {url: 'https://lemonperfect.com/.well-known/ucp', http_status: 200, content_type: application/json}
-  - {url: 'https://lemonperfect.com/agents.md', http_status: 200, content_type: text/markdown}
-  - {url: 'https://lemonperfect.com/llms.txt', http_status: 200, content_type: text/markdown}
-  - {url: 'https://lemonperfect.com/robots.txt', http_status: 200, content_type: text/plain}
-  - {url: 'https://lemonperfect.com/api/ucp/mcp', http_status: 422, note: 'tools/list gated on agent profile'}
-  - {url: 'https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json', http_status: 200, content_type: application/json}
+  - url: https://lemonperfect.com/.well-known/ucp
+    http_status: 200
+    content_type: application/json
+  - url: https://lemonperfect.com/agents.md
+    http_status: 200
+    content_type: text/markdown
+  - url: https://lemonperfect.com/llms.txt
+    http_status: 200
+    content_type: text/markdown
+  - url: https://lemonperfect.com/robots.txt
+    http_status: 200
+    content_type: text/plain
+  - url: https://lemonperfect.com/api/ucp/mcp
+    http_status: 422
+    note: tools/list gated on agent profile
+  - url: https://ucp.dev/2026-04-08/services/shopping/mcp.openrpc.json
+    http_status: 200
+    content_type: application/json
+deployment:
+  mode: remote
+  endpoint: https://lemonperfect.com/api/ucp/mcp
+  verified: probed
+  probe: live
+  tools: 13
+  checked: '2026-08-12'
+  source: catalog MCP census
