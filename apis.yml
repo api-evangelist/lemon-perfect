@@ -23,6 +23,18 @@ tags:
 - Company
 - Beverages
 - Consumer Packaged Goods
+- E-Commerce
+- Retail
+- Direct to Consumer
+- Agentic Commerce
+- MCP
+- GraphQL
+- Universal Commerce Protocol
+- Shopify
+tags_raw:
+- Company
+- Beverages
+- Consumer Packaged Goods
 - Ecommerce
 - Retail
 - Direct to Consumer
@@ -46,6 +58,11 @@ apis:
   humanURL: https://lemonperfect.com/agents.md
   baseURL: https://lemonperfect.com/api/2026-07/graphql.json
   tags:
+  - GraphQL
+  - E-Commerce
+  - Product
+  - Cart
+  tags_raw:
   - GraphQL
   - Ecommerce
   - Products
