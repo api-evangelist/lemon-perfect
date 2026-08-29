@@ -13,6 +13,17 @@ description: >-
   for customer accounts, and first-party agent instructions at /agents.md and
   /llms.txt that set an explicit human-approval-before-payment policy.
 url: https://raw.githubusercontent.com/api-evangelist/lemon-perfect/refs/heads/main/apis.yml
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 image: https://cdn.shopify.com/s/files/1/0032/0520/2020/files/Product_Lineup_52.jpg
 x-type: company
 x-source: harvest:secondary-market
