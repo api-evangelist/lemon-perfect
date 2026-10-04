@@ -104,6 +104,9 @@ apis:
     url: errors/lemon-perfect-decline-codes.yml
   - type: AgentSkill
     url: skills/lemon-perfect-browse-catalog.md
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: storefront-graphql
 - name: Lemon Perfect UCP Agentic Commerce (MCP)
   description: >-
     A hosted Model Context Protocol endpoint implementing the Universal Commerce
@@ -124,6 +127,9 @@ apis:
     url: mcp/lemon-perfect-tool-crosswalk.yml
   - type: AgentSkill
     url: skills/lemon-perfect-agentic-purchase.md
+  x-surface: platform-generated
+  x-platform: shopify
+  x-platform-surface: ucp
 common:
 - type: Website
   url: https://lemonperfect.com/
