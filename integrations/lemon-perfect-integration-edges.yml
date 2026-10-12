@@ -1,0 +1,16 @@
+generated: '2026-10-12'
+method: none
+source:
+- https://zapier.com/apps/lemon-perfect/integrations
+- https://n8n.io/integrations/lemon-perfect/
+- https://composio.dev/toolkits/lemon-perfect
+- https://monid.ai/tools/lemon-perfect
+checked:
+- https://composio.dev/toolkits/lemon-perfect
+- https://monid.ai/tools/lemon-perfect
+- https://n8n.io/integrations/lemon-perfect/
+- https://zapier.com/apps/lemon-perfect/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []
