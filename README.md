@@ -64,5 +64,111 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Lemon Perfect is a company surfaced via the API Evangelist harvest backlog (source: secondary-market) and added to the network as a stub for full-pipeline profiling.
-- https://www.hiive.com/securities/lemon-perfect-stock
+Lemon Perfect is an Atlanta-based beverage company founded in 2017 by Yanni Hufnagel, making organic, zero-sugar flavored lemon water powered by half a squeezed organic lemon per bottle and 100% daily value vitamin C. It sells direct-to-consumer at lemonperfect.com alongside national retail distribution. It is not a software vendor and publishes no developer program, yet its storefront exposes a substantial machine-readable surface on its own apex domain: a Storefront GraphQL API with open introspection, a hosted Model Context Protocol endpoint implementing the Universal Commerce Protocol for agent-driven search, cart and checkout, OpenID Connect and RFC 8414 discovery for customer accounts, and first-party agent instructions at /agents.md and /llms.txt that set an explicit human-approval-before-payment policy.
+
+**Areas:** Company · Beverages · Consumer Packaged Goods · E-Commerce · Retail · Direct to Consumer · Agentic Commerce · MCP · GraphQL · Universal Commerce Protocol · Shopify
+
+## Lemon Perfect on APIs.io
+
+Everything profiled for Lemon Perfect is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/lemon-perfect/](https://apis.io/providers/lemon-perfect/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Lemon Perfect Storefront GraphQL API](https://apis.io/apis/lemon-perfect/lemon-perfect-storefront-graphql-api/) — The Shopify Storefront GraphQL API served on lemonperfect.com. Introspection is open anonymously: 428 types, 35 query fields and 41 mutations covering…
+- [Lemon Perfect UCP Agentic Commerce (MCP)](https://apis.io/apis/lemon-perfect/lemon-perfect-ucp-agentic-commerce-mcp/) — A hosted Model Context Protocol endpoint implementing the Universal Commerce Protocol dev.ucp.shopping service (version 2026-04-08) for agent-driven catalog…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### MCP servers (1)
+
+Model Context Protocol servers that expose the API to agents.
+
+- [lemon-perfect-ucp](https://apis.io/servers/lemon-perfect/lemon-perfect-ucp/)
+
+#### Security (2)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Lemon Perfect Authentication](https://apis.io/security/lemon-perfect/lemon-perfect-authentication/)
+- [Lemon Perfect Domain Security](https://apis.io/security/lemon-perfect/lemon-perfect-domain-security/)
+
+#### OAuth scopes (1)
+
+The permissions the API asks for.
+
+- [Lemon Perfect Scopes](https://apis.io/scopes/lemon-perfect/lemon-perfect-scopes/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Lemon Perfect Rate Limits](https://apis.io/rate-limits/lemon-perfect/lemon-perfect-rate-limits/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://lemonperfect.com/)
+- [Documentation](https://lemonperfect.com/agents.md)
+- [Getting started](https://lemonperfect.com/llms.txt)
+- [API reference](https://lemonperfect.com/.well-known/ucp)
+- [Sign up](https://lemonperfect.com/account/login)
+- [Support](https://lemonperfect.com/pages/contact-us)
+- [Blog](https://lemonperfect.com/blogs/news)
+- [Terms of service](https://lemonperfect.com/policies/terms-of-service)
+- [Privacy policy](https://lemonperfect.com/policies/privacy-policy)
+
+## API Evangelist rating
+
+**Kin Score 36.0** — thin · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 75.0 |
+| Contract quality | 10.4 |
+| Contract governance | 18.2 |
+| Operational transparency | 31.6 |
+| Developer ergonomics | 49.4 |
+| Access clarity | 34.2 |
+
+**Agent readiness 34.2** — agent-ready
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | yes |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | platform (partial credit) |
+| Auth Clarity | served (partial credit) |
+| Idempotency | documented (partial credit) |
+| Error Semantics | derived (partial credit) |
+| OpenAPI Examples | — |
+| Rate Limit Signal | documented (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | derived (partial credit) |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | served (partial credit) |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | platform (partial credit) |
+
+**Regulatory alignment 34.3** — Horizontal (data, software, accessibility, platform)
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/lemon-perfect/](https://apis.io/providers/lemon-perfect/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Lemon Perfect: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/lemon-perfect/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
